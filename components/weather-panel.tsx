@@ -35,16 +35,16 @@ interface WeatherPanelProps {
 }
 
 export function WeatherPanel({ weatherData, location, isLoading, compact = false }: WeatherPanelProps) {
-  const getWeatherIcon = (condition: string) => {
-    switch (condition.toLowerCase()) {
+  const getWeatherIcon = (condition?: string) => { // condition is now optional
+    switch (condition?.toLowerCase()) { // optional chaining for safety
       case "clear":
         return <Sun className="w-6 h-6 text-yellow-400" />
       case "clouds":
         return <Cloud className="w-6 h-6 text-gray-400" />
       case "rain":
         return <CloudRain className="w-6 h-6 text-blue-400" />
-      default:
-        return <Sun className="w-6 h-6 text-yellow-400" />
+      default: // Handles undefined, null, or unknown conditions
+        return <Sun className="w-6 h-6 text-yellow-400" /> 
     }
   }
 
@@ -86,30 +86,55 @@ export function WeatherPanel({ weatherData, location, isLoading, compact = false
       <CardContent className="space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {getWeatherIcon(weatherData.weather[0].main)}
+            {/* Safely call getWeatherIcon; it now handles undefined main condition */}
+            {getWeatherIcon(weatherData.weather?.[0]?.main)}
             <div>
-              <div className="text-2xl font-bold">{Math.round(weatherData.main.temp)}°C</div>
-              <div className="text-xs text-gray-300 capitalize">{weatherData.weather[0].description}</div>
+              <div className="text-2xl font-bold">
+                {/* Safely access and round temperature, provide fallback */}
+                {typeof weatherData.main?.temp === 'number'
+                  ? `${Math.round(weatherData.main.temp)}°C`
+                  : '--°C'}
+              </div>
+              <div className="text-xs text-gray-300 capitalize">
+                {/* Safely access weather description, provide fallback */}
+                {weatherData.weather?.[0]?.description || 'N/A'}
+              </div>
             </div>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-2 text-xs">
-          <div className="flex items-center gap-1">
-            <Thermometer className="w-3 h-3 text-red-400" />
-            <span>Feels {Math.round(weatherData.main.feels_like)}°C</span>
-          </div>
+          {weatherData?.main?.feels_like !== undefined ? (
+            <div className="flex items-center gap-1">
+              <Thermometer className="w-3 h-3 text-red-400" />
+              <span>Feels {Math.round(weatherData.main.feels_like)}°C</span>
+            </div>
+          ) : (
+            <div className="text-sm text-gray-400">Weather data unavailable</div>
+          )}
           <div className="flex items-center gap-1">
             <Droplets className="w-3 h-3 text-blue-400" />
-            <span>{weatherData.main.humidity}%</span>
+            <span>
+              {typeof weatherData.main?.humidity === 'number'
+                ? `${weatherData.main.humidity}%`
+                : '--%'}
+            </span>
           </div>
           <div className="flex items-center gap-1">
             <Wind className="w-3 h-3 text-gray-400" />
-            <span>{weatherData.wind.speed} m/s</span>
+            <span>
+              {typeof weatherData.wind?.speed === 'number'
+                ? `${weatherData.wind.speed} m/s`
+                : '-- m/s'}
+            </span>
           </div>
           <div className="flex items-center gap-1">
             <Gauge className="w-3 h-3 text-gray-400" />
-            <span>{weatherData.main.pressure} hPa</span>
+            <span>
+              {typeof weatherData.main?.pressure === 'number'
+                ? `${weatherData.main.pressure} hPa`
+                : '-- hPa'}
+            </span>
           </div>
         </div>
 
