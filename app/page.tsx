@@ -16,6 +16,15 @@ const CesiumMap = dynamic(() => import("@/components/cesium-map"), {
   loading: () => <LoadingSpinner />,
 })
 
+export interface CesiumMapProps {
+  onLocationSelect: (lat: number, lon: number, locationName: string) => void
+  selectedLocation: {
+    longitude: number
+    latitude: number
+    name: string
+  }
+}
+
 export default function HomePage() {
   const [selectedLocation, setSelectedLocation] = useState({
     longitude: 8.6753,
