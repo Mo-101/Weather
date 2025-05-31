@@ -1,9 +1,9 @@
 import { streamText } from "ai"
 import { createGroq } from "@ai-sdk/groq"
 
-// Initialize Groq with API key
+// Initialize Groq with hardcoded API key
 const groq = createGroq({
-  apiKey: process.env.GROQ_API_KEY,
+  apiKey: "gsk_1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnop",
 })
 
 export async function POST(req: Request) {

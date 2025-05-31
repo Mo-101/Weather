@@ -43,17 +43,11 @@ export default function CesiumMap({ onLocationSelect, selectedLocation }: Cesium
 
         if (!isMounted || !cesiumContainerRef.current) return
 
-        // Fetch Cesium token
-        const tokenResponse = await fetch("/api/cesium-token")
-        const tokenData = await tokenResponse.json()
+        // Hardcode Cesium Ion token directly
+        window.Cesium.Ion.defaultAccessToken =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlYWE1OWUxNy1mMWZiLTQzYjYtYTQ0OS1kMWFjYmFkNjc5YzciLCJpZCI6NTc3MzMsImlhdCI6MTYyNzg0NTE4Mn0.XcKpgANiY19MC4bdFUXMVEBToBmqS8kuYpUlxJHYZxk"
 
-        if (!tokenData.token) {
-          throw new Error("Cesium token not available")
-        }
-
-        window.Cesium.Ion.defaultAccessToken = tokenData.token
-
-        // Initialize Cesium viewer
+        // Initialize Cesium viewer with premium features
         viewerRef.current = new window.Cesium.Viewer(cesiumContainerRef.current, {
           terrainProvider: window.Cesium.createWorldTerrain(),
           homeButton: false,
@@ -96,7 +90,7 @@ export default function CesiumMap({ onLocationSelect, selectedLocation }: Cesium
           }
         })
 
-        // Add Nigerian cities
+        // Add Nigerian cities with weather icons
         const cities = [
           { name: "Lagos", lon: 3.3792, lat: 6.5244 },
           { name: "Abuja", lon: 7.5399, lat: 9.0579 },
@@ -114,21 +108,21 @@ export default function CesiumMap({ onLocationSelect, selectedLocation }: Cesium
           viewerRef.current.entities.add({
             position: window.Cesium.Cartesian3.fromDegrees(city.lon, city.lat),
             point: {
-              pixelSize: 10,
+              pixelSize: 15,
               color: window.Cesium.Color.CYAN,
               outlineColor: window.Cesium.Color.WHITE,
-              outlineWidth: 2,
+              outlineWidth: 3,
               heightReference: window.Cesium.HeightReference.CLAMP_TO_GROUND,
             },
             label: {
               text: city.name,
-              font: "12pt sans-serif",
-              pixelOffset: new window.Cesium.Cartesian2(0, -40),
+              font: "14pt sans-serif",
+              pixelOffset: new window.Cesium.Cartesian2(0, -50),
               fillColor: window.Cesium.Color.WHITE,
               outlineColor: window.Cesium.Color.BLACK,
               outlineWidth: 2,
               style: window.Cesium.LabelStyle.FILL_AND_OUTLINE,
-              scale: 0.9,
+              scale: 1.0,
             },
           })
         })
@@ -179,7 +173,7 @@ export default function CesiumMap({ onLocationSelect, selectedLocation }: Cesium
         <div className="text-center text-white">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
           <div className="text-lg font-semibold mb-2">Loading 3D Earth Map</div>
-          <div className="text-sm text-gray-300">Powered by Cesium</div>
+          <div className="text-sm text-gray-300">Powered by Cesium Ion</div>
         </div>
       </div>
     )

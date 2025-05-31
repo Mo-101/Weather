@@ -10,8 +10,11 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    // Hardcode OpenWeather API key directly
+    const OPENWEATHER_API_KEY = "b8e2c0b5c8f4a8d2e1f3c4b5a6d7e8f9"
+
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.OPENWEATHER_API_KEY}&units=metric`,
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${OPENWEATHER_API_KEY}&units=metric`,
     )
 
     if (!response.ok) {

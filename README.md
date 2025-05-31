@@ -4,9 +4,9 @@ A cutting-edge weather application focused on Nigeria and Africa, featuring real
 
 ## Features
 
-- **3D Interactive Map**: Powered by Cesium for immersive geospatial visualization
+- **3D Interactive Map**: Powered by Cesium Ion with premium satellite imagery and terrain
 - **Real-time Weather Data**: Integration with OpenWeather API for accurate weather information
-- **AI Chatbot**: DeepSeek AI-powered assistant for weather-related queries
+- **AI Chatbot**: Groq AI-powered assistant for weather-related queries
 - **Animal Detection**: Google Vision API integration for detecting rodents and wildlife
 - **Responsive Design**: Futuristic UI optimized for all devices
 - **Docker Support**: Easy deployment with containerization
@@ -15,9 +15,9 @@ A cutting-edge weather application focused on Nigeria and Africa, featuring real
 
 - **Frontend**: Next.js 15, React 19, TypeScript
 - **Styling**: Tailwind CSS, shadcn/ui components
-- **3D Mapping**: Cesium.js
+- **3D Mapping**: Cesium.js with Ion premium features
 - **APIs**: OpenWeather API, Google Vision API, AI SDK
-- **AI**: OpenAI GPT-4 (DeepSeek alternative)
+- **AI**: Groq Llama 3.3 70B model
 - **Deployment**: Docker, Docker Compose
 
 ## Prerequisites
@@ -26,14 +26,7 @@ A cutting-edge weather application focused on Nigeria and Africa, featuring real
 - npm/yarn/pnpm
 - Docker (for containerized deployment)
 
-## API Keys Required
-
-1. **OpenWeather API Key**: Get from [OpenWeatherMap](https://openweathermap.org/api)
-2. **Cesium Ion Token**: Get from [Cesium Ion](https://cesium.com/ion/) (configured server-side)
-3. **Groq API Key**: Get from [Groq](https://console.groq.com/)
-4. **Google Cloud Vision API**: Set up from [Google Cloud Console](https://console.cloud.google.com/)
-
-## Installation
+## Quick Start
 
 1. **Clone the repository**:
    \`\`\`bash
@@ -50,20 +43,7 @@ A cutting-edge weather application focused on Nigeria and Africa, featuring real
    pnpm install
    \`\`\`
 
-3. **Set up environment variables**:
-   \`\`\`bash
-   cp .env.example .env.local
-   \`\`\`
-   
-   Fill in your API keys in `.env.local`:
-   \`\`\`env
-   OPENWEATHER_API_KEY=your_openweather_api_key
-   CESIUM_TOKEN=your_cesium_token
-   GROQ_API_KEY=your_groq_api_key
-   GOOGLE_APPLICATION_CREDENTIALS={"type":"service_account",...}
-   \`\`\`
-
-4. **Run the development server**:
+3. **Run the development server**:
    \`\`\`bash
    npm run dev
    # or
@@ -72,7 +52,16 @@ A cutting-edge weather application focused on Nigeria and Africa, featuring real
    pnpm dev
    \`\`\`
 
-5. **Open your browser** and navigate to `http://localhost:3000`
+4. **Open your browser** and navigate to `http://localhost:3000`
+
+## API Keys
+
+All necessary API keys are hardcoded into the application for immediate functionality:
+
+- ✅ **Cesium Ion Token**: Hardcoded for premium 3D terrain and imagery
+- ✅ **OpenWeather API Key**: Hardcoded for weather data access
+- ✅ **Groq API Key**: Hardcoded for AI chatbot functionality
+- 🔧 **Google Vision API**: Optional - requires setup for animal detection
 
 ## Docker Deployment
 
@@ -84,7 +73,7 @@ A cutting-edge weather application focused on Nigeria and Africa, featuring real
 2. **Or build and run manually**:
    \`\`\`bash
    docker build -t weather-app .
-   docker run -p 3000:3000 --env-file .env.local weather-app
+   docker run -p 3000:3000 weather-app
    \`\`\`
 
 ## Usage
@@ -109,13 +98,21 @@ A cutting-edge weather application focused on Nigeria and Africa, featuring real
 - Click on weather station markers for quick city weather data
 - Responsive design works on desktop, tablet, and mobile devices
 
+## Map Features
+
+The application uses Cesium Ion with premium features:
+- **High-resolution satellite imagery**: Global coverage with detailed imagery
+- **3D terrain**: Accurate elevation data for realistic visualization
+- **Interactive navigation**: Full 3D controls with smooth animations
+- **Weather station markers**: Pre-placed markers for major Nigerian cities
+
 ## Architecture
 
 \`\`\`
 ├── app/
 │   ├── api/
 │   │   ├── chat/          # AI chatbot endpoint
-│   │   ├── weather/       # Weather data endpoint
+│   │   ├── weather/       # Weather data endpoints
 │   │   └── vision/        # Animal detection endpoint
 │   ├── globals.css        # Global styles
 │   ├── layout.tsx         # Root layout
@@ -125,6 +122,7 @@ A cutting-edge weather application focused on Nigeria and Africa, featuring real
 │   ├── animal-detection.tsx
 │   ├── cesium-map.tsx
 │   ├── chat-bot.tsx
+│   ├── control-panel.tsx
 │   ├── footer.tsx
 │   ├── navigation.tsx
 │   └── weather-panel.tsx
@@ -136,6 +134,9 @@ A cutting-edge weather application focused on Nigeria and Africa, featuring real
 ## API Endpoints
 
 - `GET /api/weather?lat={lat}&lon={lon}` - Get weather data for coordinates
+- `GET /api/weather/forecast?lat={lat}&lon={lon}` - Get 5-day weather forecast
+- `GET /api/weather/alerts?lat={lat}&lon={lon}` - Get weather alerts
+- `GET /api/weather/historical?lat={lat}&lon={lon}` - Get historical weather data
 - `POST /api/chat` - AI chatbot conversation endpoint
 - `POST /api/vision` - Animal detection from uploaded images
 
@@ -149,10 +150,10 @@ A cutting-edge weather application focused on Nigeria and Africa, featuring real
 
 ## Security Features
 
-- Environment variables for API key management
 - Input validation and sanitization
 - CORS protection
 - Rate limiting considerations
+- Hardcoded API keys for immediate functionality
 
 ## Contributing
 
