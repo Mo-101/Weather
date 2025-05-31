@@ -4,12 +4,11 @@ import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
 import { WeatherPanel } from "@/components/weather-panel"
 import { ChatBot } from "@/components/chat-bot"
-import { AnimalDetection } from "@/components/animal-detection"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { LoadingSpinner } from "@/components/loading-spinner"
-import { WeatherAlerts } from "@/components/weather-alerts"
 import { WeatherForecast } from "@/components/weather-forecast"
+import { ControlPanel } from "@/components/control-panel"
 
 // Dynamically import Cesium component to avoid SSR issues
 const CesiumMap = dynamic(() => import("@/components/cesium-map"), {
@@ -26,6 +25,7 @@ export default function HomePage() {
   const [weatherData, setWeatherData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [weatherAlerts, setWeatherAlerts] = useState([])
+  const [activePanel, setActivePanel] = useState<string | null>("weather")
 
   const fetchWeatherData = async (lat: number, lon: number, locationName: string) => {
     setIsLoading(true)
@@ -54,33 +54,40 @@ export default function HomePage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-hidden">
+    <div className="min-h-screen bg-black text-white overflow-hidden relative">
       {/* Navigation */}
       <Navigation />
 
-      {/* Main Content */}
-      <div className="relative h-screen flex">
-        {/* Cesium Map Container */}
-        <div className="flex-1 relative">
+      {/* Main Content - Full Screen Cesium Map */}
+      <div className="relative h-screen">
+        {/* Cesium Map Container - Full Background */}
+        <div className="absolute inset-0">
           <CesiumMap onLocationSelect={fetchWeatherData} selectedLocation={selectedLocation} />
+        </div>
 
-          {/* Overlay Panels */}
-          <div className="absolute top-4 left-4 z-10 space-y-4">
-            <WeatherPanel weatherData={weatherData} location={selectedLocation} isLoading={isLoading} />
-            {weatherAlerts.length > 0 && <WeatherAlerts alerts={weatherAlerts} />}
-          </div>
+        {/* Left Side Panel - Compact Weather Info */}
+        <div className="absolute top-20 left-4 z-20">
+          <WeatherPanel weatherData={weatherData} location={selectedLocation} isLoading={isLoading} compact={true} />
+        </div>
 
-          <div className="absolute bottom-20 left-4 z-10">
-            <WeatherForecast location={selectedLocation} />
-          </div>
+        {/* Right Side Control Panel */}
+        <div className="absolute top-20 right-4 z-20">
+          <ControlPanel
+            activePanel={activePanel}
+            setActivePanel={setActivePanel}
+            weatherAlerts={weatherAlerts}
+            location={selectedLocation}
+          />
+        </div>
 
-          <div className="absolute top-4 right-4 z-10">
-            <AnimalDetection />
-          </div>
+        {/* Bottom Panel - Forecast (Collapsible) */}
+        <div className="absolute bottom-20 left-4 right-4 z-20">
+          <WeatherForecast location={selectedLocation} horizontal={true} />
+        </div>
 
-          <div className="absolute bottom-4 right-4 z-10">
-            <ChatBot />
-          </div>
+        {/* Floating Chat Button */}
+        <div className="absolute bottom-6 right-6 z-30">
+          <ChatBot />
         </div>
       </div>
 

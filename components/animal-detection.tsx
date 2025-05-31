@@ -2,11 +2,14 @@
 
 import type React from "react"
 import { useState, useRef } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Upload, Scan, Camera } from "lucide-react"
+import { Upload, Camera } from "lucide-react"
 
-export function AnimalDetection() {
+interface AnimalDetectionProps {
+  compact?: boolean
+}
+
+export function AnimalDetection({ compact = false }: AnimalDetectionProps) {
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [results, setResults] = useState<any>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
@@ -44,56 +47,44 @@ export function AnimalDetection() {
   }
 
   return (
-    <Card className="w-80 bg-black/20 backdrop-blur-md border-purple-500/30 text-white shadow-xl">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Scan className="w-5 h-5" />
-          Animal Detection
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="text-sm text-gray-300">
-          Upload an image to detect animals, particularly rodents and wildlife using Google Vision AI
+    <div className="space-y-3">
+      <div className="text-xs text-gray-300">Upload an image to detect animals using Google Vision AI</div>
+
+      <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+
+      <Button
+        onClick={() => fileInputRef.current?.click()}
+        className="w-full bg-purple-600/40 backdrop-blur-lg border-purple-400/20 text-white hover:bg-purple-600/60 text-xs"
+        disabled={isAnalyzing}
+        variant="outline"
+      >
+        <Upload className="w-3 h-3 mr-2" />
+        {isAnalyzing ? "Analyzing..." : "Upload Image"}
+      </Button>
+
+      {imagePreview && (
+        <div className="space-y-2">
+          <img src={imagePreview || "/placeholder.svg"} alt="Preview" className="w-full h-24 object-cover rounded" />
         </div>
+      )}
 
-        <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
-
-        <Button
-          onClick={() => fileInputRef.current?.click()}
-          className="w-full bg-purple-600 hover:bg-purple-700"
-          disabled={isAnalyzing}
-        >
-          <Upload className="w-4 h-4 mr-2" />
-          {isAnalyzing ? "Analyzing..." : "Upload Image"}
-        </Button>
-
-        {imagePreview && (
-          <div className="space-y-2">
-            <img src={imagePreview || "/placeholder.svg"} alt="Preview" className="w-full h-32 object-cover rounded" />
+      {results && (
+        <div className="space-y-2">
+          <div className="text-xs font-medium flex items-center gap-2">
+            <Camera className="w-3 h-3" />
+            Detection Results:
           </div>
-        )}
-
-        {results && (
-          <div className="space-y-2">
-            <div className="text-sm font-medium flex items-center gap-2">
-              <Camera className="w-4 h-4" />
-              Detection Results:
-            </div>
-            <div className="text-xs space-y-1 max-h-32 overflow-y-auto">
-              {results.animals?.map((animal: any, index: number) => (
-                <div key={index} className="bg-white/10 p-2 rounded">
-                  <div className="font-medium">{animal.name}</div>
-                  <div className="text-gray-400">Confidence: {(animal.confidence * 100).toFixed(1)}%</div>
-                  <div className="text-gray-500 text-xs">Type: {animal.type}</div>
-                </div>
-              ))}
-              {results.animals?.length === 0 && (
-                <div className="text-gray-400 text-center py-2">No animals detected in this image</div>
-              )}
-            </div>
+          <div className="text-xs space-y-1 max-h-24 overflow-y-auto">
+            {results.animals?.map((animal: any, index: number) => (
+              <div key={index} className="bg-white/10 p-2 rounded">
+                <div className="font-medium">{animal.name}</div>
+                <div className="text-gray-400">Confidence: {(animal.confidence * 100).toFixed(1)}%</div>
+              </div>
+            ))}
+            {results.animals?.length === 0 && <div className="text-gray-400 text-center py-2">No animals detected</div>}
           </div>
-        )}
-      </CardContent>
-    </Card>
+        </div>
+      )}
+    </div>
   )
 }

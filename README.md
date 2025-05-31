@@ -29,8 +29,8 @@ A cutting-edge weather application focused on Nigeria and Africa, featuring real
 ## API Keys Required
 
 1. **OpenWeather API Key**: Get from [OpenWeatherMap](https://openweathermap.org/api)
-2. **Cesium Ion Token**: Get from [Cesium Ion](https://cesium.com/ion/)
-3. **OpenAI API Key**: Get from [OpenAI](https://platform.openai.com/)
+2. **Cesium Ion Token**: Get from [Cesium Ion](https://cesium.com/ion/) (configured server-side)
+3. **Groq API Key**: Get from [Groq](https://console.groq.com/)
 4. **Google Cloud Vision API**: Set up from [Google Cloud Console](https://console.cloud.google.com/)
 
 ## Installation
@@ -58,8 +58,8 @@ A cutting-edge weather application focused on Nigeria and Africa, featuring real
    Fill in your API keys in `.env.local`:
    \`\`\`env
    OPENWEATHER_API_KEY=your_openweather_api_key
-   NEXT_PUBLIC_CESIUM_TOKEN=your_cesium_token
-   OPENAI_API_KEY=your_openai_api_key
+   CESIUM_TOKEN=your_cesium_token
+   GROQ_API_KEY=your_groq_api_key
    GOOGLE_APPLICATION_CREDENTIALS={"type":"service_account",...}
    \`\`\`
 

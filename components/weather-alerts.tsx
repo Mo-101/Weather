@@ -14,9 +14,10 @@ interface WeatherAlert {
 
 interface WeatherAlertsProps {
   alerts: WeatherAlert[]
+  compact?: boolean
 }
 
-export function WeatherAlerts({ alerts }: WeatherAlertsProps) {
+export function WeatherAlerts({ alerts, compact = false }: WeatherAlertsProps) {
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case "extreme":
@@ -33,25 +34,41 @@ export function WeatherAlerts({ alerts }: WeatherAlertsProps) {
   const getAlertIcon = (event: string) => {
     const eventLower = event.toLowerCase()
     if (eventLower.includes("thunder") || eventLower.includes("lightning")) {
-      return <Zap className="w-5 h-5 text-yellow-400" />
+      return <Zap className="w-4 h-4 text-yellow-400" />
     }
     if (eventLower.includes("wind")) {
-      return <Wind className="w-5 h-5 text-gray-400" />
+      return <Wind className="w-4 h-4 text-gray-400" />
     }
     if (eventLower.includes("heat") || eventLower.includes("temperature")) {
-      return <Thermometer className="w-5 h-5 text-red-400" />
+      return <Thermometer className="w-4 h-4 text-red-400" />
     }
     if (eventLower.includes("rain") || eventLower.includes("flood")) {
-      return <Cloud className="w-5 h-5 text-blue-400" />
+      return <Cloud className="w-4 h-4 text-blue-400" />
     }
-    return <AlertTriangle className="w-5 h-5 text-orange-400" />
+    return <AlertTriangle className="w-4 h-4 text-orange-400" />
+  }
+
+  if (compact) {
+    return (
+      <div className="space-y-2 max-h-48 overflow-y-auto">
+        {alerts.map((alert, index) => (
+          <div key={index} className={`p-2 rounded border text-xs ${getSeverityColor(alert.severity)}`}>
+            <div className="flex items-center gap-2 mb-1">
+              {getAlertIcon(alert.event)}
+              <span className="font-medium">{alert.event}</span>
+            </div>
+            <p className="text-gray-300 text-xs">{alert.description.substring(0, 80)}...</p>
+          </div>
+        ))}
+      </div>
+    )
   }
 
   return (
-    <Card className="w-80 bg-black/20 backdrop-blur-md border-red-500/30 text-white shadow-xl">
+    <Card className="w-80 bg-black/40 backdrop-blur-lg border-red-500/30 text-white shadow-2xl">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-red-400">
-          <AlertTriangle className="w-5 h-5" />
+        <CardTitle className="flex items-center gap-2 text-red-400 text-sm">
+          <AlertTriangle className="w-4 h-4" />
           Weather Alerts ({alerts.length})
         </CardTitle>
       </CardHeader>
