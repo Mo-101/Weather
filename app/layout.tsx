@@ -1,14 +1,15 @@
 import type React from "react"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
 import "./globals.css"
+import { Inter } from "next/font/google"
+import { ThemeProvider } from "@/components/theme-provider"
+import { RealTimeProvider } from "@/components/real-time-provider"
+import type { Metadata } from "next"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "WeatherAI Nigeria - Advanced Geospatial Weather Platform",
-  description:
-    "Real-time weather data for Nigeria with AI-powered insights, animal detection, and interactive 3D mapping powered by Cesium and Groq AI.",
+  title: "DeepTrack - Weather Monitoring & Risk Assessment",
+  description: "Advanced weather monitoring and risk assessment system",
   generator: "v0.dev",
 }
 
@@ -18,59 +19,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Prevent extension interference */}
-        <meta
-          httpEquiv="Content-Security-Policy"
-          content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cesium.com https://cdn.jsdelivr.net; object-src 'none';"
-        />
-        <meta name="referrer" content="strict-origin-when-cross-origin" />
-
-        {/* Preload Cesium resources */}
-        <link
-          rel="preload"
-          href="https://cesium.com/downloads/cesiumjs/releases/1.111/Build/Cesium/Cesium.js"
-          as="script"
-        />
-        <link
-          rel="preload"
-          href="https://cesium.com/downloads/cesiumjs/releases/1.111/Build/Cesium/Widgets/widgets.css"
-          as="style"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       </head>
       <body className={inter.className}>
-        {/* Extension conflict protection */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              // Protect against extension interference
-              (function() {
-                // Suppress extension-related console errors
-                const originalError = console.error;
-                console.error = function(...args) {
-                  const message = args.join(' ');
-                  if (message.includes('chrome-extension://') || 
-                      message.includes('web_accessible_resources') ||
-                      message.includes('Port connected') ||
-                      message.includes('Port disconnected')) {
-                    return; // Suppress extension errors
-                  }
-                  originalError.apply(console, args);
-                };
-
-                // Protect global objects from extension modification
-                if (typeof window !== 'undefined') {
-                  Object.defineProperty(window, 'Cesium', {
-                    writable: true,
-                    configurable: false
-                  });
-                }
-              })();
-            `,
-          }}
-        />
-        {children}
+        <ThemeProvider attribute="class" defaultTheme="dark-blue" enableSystem disableTransitionOnChange>
+          <RealTimeProvider>{children}</RealTimeProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
