@@ -44,7 +44,7 @@ export function WeatherPanel({ weatherData, location, isLoading, compact = false
       case "rain":
         return <CloudRain className="w-6 h-6 text-blue-400" />
       default: // Handles undefined, null, or unknown conditions
-        return <Sun className="w-6 h-6 text-yellow-400" /> 
+        return <Sun className="w-6 h-6 text-yellow-400" />
     }
   }
 
