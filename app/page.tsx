@@ -1,19 +1,17 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import { CesiumMap } from "@/components/cesium-map"
-import { FallbackMap } from "@/components/fallback-map"
-import { WeatherPanel } from "@/components/weather-panel"
-import { ControlPanel } from "@/components/control-panel"
-import { RiskAssessmentPanel } from "@/components/risk-assessment-panel"
-import { LoadingScreen } from "@/components/loading-screen"
-import { SmartHeader } from "@/components/smart-header"
-import { FooterTicker } from "@/components/footer-ticker"
-import { ColoniesPanel } from "@/components/colonies-panel"
-import { AnalyticsPanel } from "@/components/analytics-panel"
-import { SettingsPanel } from "@/components/settings-panel"
-import { RiskLegend } from "@/components/risk-legend"
-import { RealTimeMapIntegration } from "@/components/real-time-map-integration"
+import CesiumMap from "@/components/cesium-map"
+import WeatherPanel from "@/components/weather-panel"
+import ControlPanel from "@/components/control-panel"
+import RiskAssessmentPanel from "@/components/risk-assessment-panel"
+import LoadingScreen from "@/components/loading-screen"
+import SmartHeader from "@/components/smart-header"
+import FooterTicker from "@/components/footer-ticker"
+import ColoniesPanel from "@/components/colonies-panel"
+import AnalyticsPanel from "@/components/analytics-panel"
+import SettingsPanel from "@/components/settings-panel"
+import RiskLegend from "@/components/risk-legend"
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -28,49 +26,9 @@ export default function Home() {
   const [headerVisible, setHeaderVisible] = useState(true)
   const mapRef = useRef(null)
 
-<<<<<<< HEAD
-export interface CesiumMapProps {
-  onLocationSelect: (lat: number, lon: number, locationName: string) => void
-  selectedLocation: {
-    longitude: number
-    latitude: number
-    name: string
-  }
-}
-
-export default function HomePage() {
-  const [selectedLocation, setSelectedLocation] = useState({
-    longitude: 8.6753,
-    latitude: 9.082,
-    name: "Nigeria",
-  })
-  const [weatherData, setWeatherData] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [weatherAlerts, setWeatherAlerts] = useState([])
-  const [activePanel, setActivePanel] = useState<string | null>("weather")
-
-  const fetchWeatherData = async (lat: number, lon: number, locationName: string) => {
-    setIsLoading(true)
-    try {
-      const [weatherResponse, alertsResponse] = await Promise.all([
-        fetch(`/api/weather?lat=${lat}&lon=${lon}`),
-        fetch(`/api/weather/alerts?lat=${lat}&lon=${lon}`),
-      ])
-
-      const weatherData = await weatherResponse.json()
-      const alertsData = await alertsResponse.json()
-
-      setWeatherData(weatherData)
-      setWeatherAlerts(alertsData.alerts || [])
-      setSelectedLocation({ longitude: lon, latitude: lat, name: locationName })
-    } catch (error) {
-      console.error("Error fetching weather data:", error)
-    } finally {
-=======
   useEffect(() => {
     // Simulate loading time for resources
     const timer = setTimeout(() => {
->>>>>>> 4a760b8b5e200001f8c06ac0d69ebd3da6b55b4e
       setIsLoading(false)
     }, 2000)
 
@@ -156,12 +114,14 @@ export default function HomePage() {
 
       {/* Central Map Area */}
       <div className="map-core absolute inset-0 w-full h-full" ref={mapRef}>
-        {useFallbackMap ? <FallbackMap /> : <CesiumMap />}
+        {useFallbackMap ? <FallbackMap /> : <CesiumMap onLocationSelect={function (_lat: number, _lon: number, _name: string): void {
+          throw new Error("Function not implemented.")
+        } } />}
       </div>
 
       {/* Real-time tracking integration */}
-      <RealTimeMapIntegration mapComponent={mapRef.current} />
-
+      {/* Real-time tracking integration */}
+      {/* <RealTimeMapIntegration mapComponent={mapRef.current} /> */}
       <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-[800]">
         <RiskLegend />
       </div>

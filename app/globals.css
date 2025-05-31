@@ -1,6 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* @tailwind directives removed: make sure Tailwind CSS is set up in your build pipeline if you want to use them */
+/* @tailwind base; */
+/* @tailwind components; */
+/* @tailwind utilities; */
 
 @layer base {
   :root {
@@ -68,11 +69,12 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
   html,
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     margin: 0;
     padding: 0;
     height: 100%;
@@ -89,78 +91,6 @@
   }
 }
 
-<<<<<<< HEAD
-/* Extension interference protection */
-[data-extension-id],
-[data-extension-name],
-script[src*="chrome-extension://"],
-script[src*="moz-extension://"],
-script[src*="safari-extension://"] {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-/* Cesium specific styles */
-.cesium-viewer-cesiumWidgetContainer {
-  background: transparent !important;
-}
-
-.cesium-widget-credits {
-  display: none !important;
-}
-
-.cesium-viewer {
-  width: 100% !important;
-  height: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-}
-
-.cesium-viewer-cesiumWidgetContainer,
-.cesium-widget {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* Hide all Cesium credits and attribution */
-.cesium-credit-logoContainer,
-.cesium-credit-textContainer,
-.cesium-widget-credits {
-  display: none !important;
-}
-
-/* Ensure panels float above the map */
-.weather-panel {
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  background: rgba(0, 0, 0, 0.3) !important;
-  border: 1px solid rgba(147, 51, 234, 0.3);
-}
-
-/* Futuristic scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(147, 51, 234, 0.6);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(147, 51, 234, 0.8);
-}
-
-/* Loading animations */
-=======
->>>>>>> 4a760b8b5e200001f8c06ac0d69ebd3da6b55b4e
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -207,7 +137,13 @@ script[src*="safari-extension://"] {
 /* Hide scrollbar for IE, Edge and Firefox */
 .hide-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+}
+
+/* Apply scrollbar-width only if supported */
+@supports (scrollbar-width: none) {
+  .hide-scrollbar {
+    scrollbar-width: none; /* Firefox */
+  }
 }
 
 /* Scrollbar styling for the AI Hub */
