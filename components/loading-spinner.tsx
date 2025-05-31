@@ -1,11 +1,10 @@
 export function LoadingSpinner() {
   return (
-    <div className="flex items-center justify-center h-full bg-transparent">
-      <div className="relative">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-400"></div>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-white text-sm font-medium bg-black/50 px-3 py-1 rounded">Loading Map...</div>
-        </div>
+    <div className="flex items-center justify-center h-full bg-gradient-to-br from-blue-900 to-purple-900">
+      <div className="text-center text-white">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
+        <div className="text-lg font-semibold mb-2">Loading Weather App</div>
+        <div className="text-sm text-gray-300">Initializing 3D Earth Map...</div>
       </div>
     </div>
   )

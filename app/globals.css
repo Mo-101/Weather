@@ -161,3 +161,57 @@
 .chat-message-assistant {
   animation: slideInLeft 0.3s ease-out;
 }
+
+/* Cesium specific fixes */
+.cesium-viewer-cesiumWidgetContainer {
+  background: transparent !important;
+}
+
+.cesium-widget-credits {
+  display: none !important;
+}
+
+.cesium-viewer {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.cesium-viewer-cesiumWidgetContainer,
+.cesium-widget {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Hide Cesium credits and attribution */
+.cesium-credit-logoContainer,
+.cesium-credit-textContainer {
+  display: none !important;
+}
+
+/* Browser extension conflict fixes */
+[data-extension-id] {
+  display: none !important;
+}
+
+/* Prevent extension injection */
+script[src*="chrome-extension://"] {
+  display: none !important;
+}
+
+/* Loading state improvements */
+.cesium-loading {
+  background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%) !important;
+}
+
+/* Error handling styles */
+.map-error {
+  background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
