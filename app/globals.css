@@ -68,7 +68,19 @@
   }
 }
 
-/* Custom Cesium styles */
+/* Extension interference protection */
+[data-extension-id],
+[data-extension-name],
+script[src*="chrome-extension://"],
+script[src*="moz-extension://"],
+script[src*="safari-extension://"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Cesium specific styles */
 .cesium-viewer-cesiumWidgetContainer {
   background: transparent !important;
 }
@@ -89,6 +101,13 @@
 .cesium-widget {
   width: 100% !important;
   height: 100% !important;
+}
+
+/* Hide all Cesium credits and attribution */
+.cesium-credit-logoContainer,
+.cesium-credit-textContainer,
+.cesium-widget-credits {
+  display: none !important;
 }
 
 /* Ensure panels float above the map */
@@ -162,45 +181,6 @@
   animation: slideInLeft 0.3s ease-out;
 }
 
-/* Cesium specific fixes */
-.cesium-viewer-cesiumWidgetContainer {
-  background: transparent !important;
-}
-
-.cesium-widget-credits {
-  display: none !important;
-}
-
-.cesium-viewer {
-  width: 100% !important;
-  height: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-}
-
-.cesium-viewer-cesiumWidgetContainer,
-.cesium-widget {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* Hide Cesium credits and attribution */
-.cesium-credit-logoContainer,
-.cesium-credit-textContainer {
-  display: none !important;
-}
-
-/* Browser extension conflict fixes */
-[data-extension-id] {
-  display: none !important;
-}
-
-/* Prevent extension injection */
-script[src*="chrome-extension://"] {
-  display: none !important;
-}
-
 /* Loading state improvements */
 .cesium-loading {
   background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%) !important;
@@ -214,4 +194,30 @@ script[src*="chrome-extension://"] {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+}
+
+/* Prevent extension style interference */
+body {
+  isolation: isolate;
+}
+
+/* Performance optimizations */
+.cesium-viewer {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin,
+  .animate-pulse {
+    animation: none;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .cesium-viewer {
+    touch-action: manipulation;
+  }
 }
